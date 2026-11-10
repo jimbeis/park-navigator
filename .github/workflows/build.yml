@@ -7,36 +7,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-      - name: Setup Expo & EAS
+      - name: Setup Expo
         uses: expo/expo-github-action@v8
         with:
-          eas-version: latest
+          expo-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install EAS CLI Globally
+        run: npm install -g eas-cli
 
-      - name: Build APK locally via EAS
-        run: npx eas build --platform android --profile production --local --output ./app-release.apk
+      - name: Install project dependencies
+        run: npm install
+
+      - name: Build local APK
+        run: eas build --platform android --local --profile preview
         env:
-          EAS_NO_VCS: 1
-
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: park-navigator-apk
-          path: app-release.apk
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
