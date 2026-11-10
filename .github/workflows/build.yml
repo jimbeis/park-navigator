@@ -10,6 +10,9 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: List repository files (Debug)
+        run: find . -maxdepth 3 -not -path '*/.*'
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -25,10 +28,8 @@ jobs:
 
       - name: Install project dependencies
         run: npm install
-        working-directory: ./park-navigator
 
       - name: Build local APK
         run: eas build --platform android --local --profile preview --non-interactive
-        working-directory: ./park-navigator
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
