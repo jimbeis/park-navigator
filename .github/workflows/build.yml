@@ -6,11 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./park-navigator
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
-        with:
-          path: park-navigator
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -27,10 +28,8 @@ jobs:
 
       - name: Install project dependencies
         run: npm install
-        working-directory: park-navigator
 
       - name: Build local APK
         run: eas build --platform android --local --profile preview --non-interactive
-        working-directory: park-navigator
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
