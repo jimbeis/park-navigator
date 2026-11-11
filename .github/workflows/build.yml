@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          path: park-navigator
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -24,9 +26,11 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install project dependencies
-        run: cd park-navigator && npm install
+        run: npm install
+        working-directory: park-navigator
 
       - name: Build local APK
-        run: cd park-navigator && eas build --platform android --local --profile preview --non-interactive
+        run: eas build --platform android --local --profile preview --non-interactive
+        working-directory: park-navigator
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
