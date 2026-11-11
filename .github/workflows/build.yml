@@ -24,11 +24,9 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install project dependencies
-        run: npm install
-        working-directory: park-navigator
+        run: cd park-navigator && npm install
 
       - name: Build local APK
-        run: eas build --platform android --local --profile preview --non-interactive
-        working-directory: park-navigator
+        run: cd park-navigator && eas build --platform android --local --profile preview --non-interactive
         env:
           EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
